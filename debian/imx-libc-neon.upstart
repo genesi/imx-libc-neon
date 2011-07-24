@@ -5,23 +5,17 @@
 
 description	"preload the libc-neon library"
 
-start on startup 
+start on startup
+
+console output
 
 script
 	. /etc/default/imx-libc-neon
-	rm /tmp/log
-	echo "PRELOAD_IMX_LIBC_NEON = $PRELOAD_IMX_LIBC_NEON" >> /tmp/log
 	[ ! "$PRELOAD_IMX_LIBC_NEON" = "yes" ] && echo >/tmp/log "not starting..." && exit 0
 	has_neon=$(grep -c neon /proc/cpuinfo)
-	echo "has_neon $has_neon" >> /tmp/log
 	[ ! "$has_neon" = "1" ] && echo >>/tmp/log "no working NEON..." && exit 0
 	touch /etc/ld.so.preload
-	echo "a" >>/tmp/log
 	preloaded=$(grep "^/lib/libc-imx-neon.so" /etc/ld.so.preload|wc -l)
-	echo "b" >>/tmp/log
-	echo "preloaded $preloaded" >> /tmp/log
-	echo "c" >>/tmp/log
 	[ ! "$preloaded" = "1" ] && echo "/lib/libc-imx-neon.so" >> /etc/ld.so.preload
-	echo "d" >>/tmp/log
 	exit 0
 end script
