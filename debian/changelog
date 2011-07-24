@@ -1,0 +1,5 @@
+imx-libc-neon (1.0.0-20110724.1) maverick; urgency=low
+
+  * Initial upload
+
+ -- Konstantinos Margaritis <markos@markos@genesi-usa.com>  Fri, 17 Jun 2011 20:38:45 +0000

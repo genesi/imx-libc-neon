@@ -1,0 +1,14 @@
+Source: imx-libc-neon
+Section: unknown
+Priority: extra
+Maintainer: Matt Sealey <matt@genesi-usa.com>
+Uploaders: Steev Klimaszewski <steev@genesi-usa.com>, Konstantinos Margaritis <markos@genesi-usa.com>, Luca Barbato <lu_zero@genesi-usa.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.9.1
+
+Package: imx-libc-neon
+Architecture: armel armhf
+Depends: ${shlibs:Depends},${misc:Depends}
+Description: LD_PRELOADed NEON optimized libc functions for ARM cpus
+ String and memory functions from the Bionic C library, for use on
+ ARM cpus that include a working NEON unit.

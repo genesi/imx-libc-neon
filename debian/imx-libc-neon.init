@@ -1,0 +1,68 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          imx-libc-neon
+# Required-Start:    mountdevsubfs
+# X-Start-Before:    hostname keymap keyboard-setup procps pcmcia hwclock hwclockfirst hdparm hibernate-cleanup lvm2
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Preload the libc-neon library
+# Description:       Use LD_PRELOAD mechanism to preload NEON-optimized
+#                    replacement glibc routines.
+### END INIT INFO
+
+PATH=/sbin:/bin  # No remote fs at start
+LIBC_NEON=/usr/libc-imx-neon.so
+ETC_LD_PRELOAD=/etc/ld.so.preload
+CPUINFO=/proc/cpuinfo
+NAME=imx-libc-neon
+DESC="libc-neon"
+[ -r /etc/default/imx-libc-neon ] && . /etc/default/imx-libc-neon
+. /lib/init/vars.sh
+
+. /lib/lsb/init-functions
+
+# We take the special measure of requiring preloading
+# to be enabled by setting an environment variable.
+case "$PRELOAD_IMX_LIBC_NEON" in
+  [Nn]*)
+yy	exit 0
+	;;
+esac
+
+# Even if it's enabled, we disable it on TO2 systems, 
+# because the NEON unit is broken
+if [ "`grep -c neon $CPUINFO`" != 1 ]; then
+    exit 0
+fi
+
+SCRIPTNAME=${0##*/}
+SCRIPTNAME=${SCRIPTNAME#[SK]??}
+
+ACTION="$1"
+case "$ACTION" in
+  start)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Preloading $NAME"
+        [ ! -f $ETC_LD_PRELOAD ] && touch $ETC_LD_PRELOAD
+        [ "`grep -c '^$$LIBC_NEON$' $ETC_LD_PRELOAD`" != 1 ] && echo $LIBC_NEON >>$ETC_LD_PRELOAD
+	ES=$?
+	[ "$VERBOSE" != no ] && log_end_msg $ES
+	;;
+  stop)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Disabling preloading of $NAME"
+        if [ -f $ETC_LD_PRELOAD ]; then
+#            sed -e "s/^$$LIBC_NEON/\#$$LIBC_NEON/" $ETC_LD_PRELOAD 
+	    ES=$?
+        fi
+	[ "$VERBOSE" != no ] && log_end_msg $ES
+	;;
+  restart|force-reload)
+	;;
+  status)
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload|status}" >&2
+	exit 3
+	;;
+esac
+

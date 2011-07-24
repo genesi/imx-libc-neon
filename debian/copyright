@@ -1,0 +1,36 @@
+This work was packaged for Debian by:
+
+    Steev Klimaszewski <steev@genesi-usa.com> on Sat, 13 Nov 2010 02:52:54 -0600
+
+It was downloaded from:
+
+    <http://www.freescale.com/>
+
+Upstream Author(s):
+
+    Freescale Semiconductor, Inc.
+
+Copyright:
+
+    <Copyright (C) 2010 Freescale Semiconductor, Inc.>
+    <Copyright (C) 2010 Genesi USA, Inc.>
+
+License:
+
+    PROPRIETARY
+
+The Debian packaging is:
+
+    Copyright (C) 2010 Genesi USA, Inc. <steev@genesi-usa.com>
+
+# Please chose a license for your packaging work. If the program you package
+# uses a mainstream license, using the same license is the safest choice.
+# Please avoid to pick license terms that are more restrictive than the
+# packaged work, as it may make Debian's contributions unacceptable upstream.
+# If you just want it to be GPL version 3, leave the following lines in.
+
+and is licensed under the BSD license,
+see "/usr/share/common-licenses/BSD".
+
+# Please also look if there are files or directories which have a
+# different copyright/license attached and list them here.

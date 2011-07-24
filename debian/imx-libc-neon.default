@@ -1,0 +1,2 @@
+# try to LD_PRELOAD imx-libc-neon at startup ?
+PRELOAD_IMX_LIBC_NEON=yes
