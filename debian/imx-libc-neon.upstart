@@ -15,7 +15,7 @@ script
 	has_neon=$(grep -c neon /proc/cpuinfo)
 	[ ! "$has_neon" = "1" ] && echo >>/tmp/log "no working NEON..." && exit 0
 	touch /etc/ld.so.preload
-	preloaded=$(grep "^/lib/libc-imx-neon.so" /etc/ld.so.preload|wc -l)
-	[ ! "$preloaded" = "1" ] && echo "/lib/libc-imx-neon.so" >> /etc/ld.so.preload
+	preloaded=$(grep "^/lib/libc-neon.so" /etc/ld.so.preload|wc -l)
+	[ ! "$preloaded" = "1" ] && echo "/lib/libc-neon.so" >> /etc/ld.so.preload
 	exit 0
 end script

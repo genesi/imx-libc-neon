@@ -12,7 +12,7 @@
 ### END INIT INFO
 
 PATH=/sbin:/bin  # No remote fs at start
-LIBC_NEON=/usr/libc-imx-neon.so
+LIBC_NEON=/usr/libc-neon.so
 ETC_LD_PRELOAD=/etc/ld.so.preload
 CPUINFO=/proc/cpuinfo
 NAME=imx-libc-neon
