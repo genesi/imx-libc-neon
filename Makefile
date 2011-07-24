@@ -1,6 +1,6 @@
 SRCS = memcpy.S memset.S memcmp.S memchr.S strcmp.S strlen.S strcpy.S
 OBJS = memcpy.o memset.o memcmp.o memchr.o strcmp.o strlen.o strcpy.o
-LIB = libc-imx-neon.so
+LIB = libc-neon.so
 
 #strcpy.c
 
