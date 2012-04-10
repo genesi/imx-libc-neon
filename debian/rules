@@ -23,5 +23,5 @@ export DISTRIBUTION=$(shell dpkg-vendor --query vendor)
 	dh $@ 
 
 override_dh_installinit:
-	dh_installinit --no-start
+	dh_installinit
 
