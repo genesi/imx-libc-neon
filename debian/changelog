@@ -1,3 +1,9 @@
+imx-libc-neon (1.0.0-20120413.1) unstable; urgency=low
+
+  * Argh, wrong path, init tried /usr instead of /lib
+
+ -- Konstantinos Margaritis <markos@genesi-usa.com>  Sat, 14 Apr 2012 00:29:08 +0300
+
 imx-libc-neon (1.0.0-20120413) unstable; urgency=low
 
   * Actually include the init script.
