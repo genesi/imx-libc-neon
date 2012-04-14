@@ -1,3 +1,10 @@
+imx-libc-neon (1.0.0-20120414.1) unstable; urgency=low
+
+  * Changed run levels to default
+  * Implemented stop phase as well.
+
+ -- Konstantinos Margaritis <markos@genesi-usa.com>  Sat, 14 Apr 2012 11:11:17 +0300
+
 imx-libc-neon (1.0.0-20120413.1) unstable; urgency=low
 
   * Argh, wrong path, init tried /usr instead of /lib

@@ -4,8 +4,8 @@
 # Required-Start:    mountdevsubfs
 # X-Start-Before:    hostname keymap keyboard-setup procps pcmcia hwclock hwclockfirst hdparm hibernate-cleanup lvm2
 # Required-Stop:
-# Default-Start:     S
-# Default-Stop:
+# Default-Start:     $all
+# Default-Stop:      $all
 # Short-Description: Preload the libc-neon library
 # Description:       Use LD_PRELOAD mechanism to preload NEON-optimized
 #                    replacement glibc routines.
@@ -51,8 +51,9 @@ case "$ACTION" in
   stop)
 	[ "$VERBOSE" != no ] && log_daemon_msg "Disabling preloading of $NAME"
         if [ -f $ETC_LD_PRELOAD ]; then
-#            sed -e "s/^$$LIBC_NEON/\#$$LIBC_NEON/" $ETC_LD_PRELOAD 
-	    ES=$?
+            grep -v "$LIBC_NEON" $ETC_LD_PRELOAD >$ETC_LD_PRELOAD.new
+            ES=$?
+            mv $ETC_LD_PRELOAD.new $ETC_LD_PRELOAD
         fi
 	[ "$VERBOSE" != no ] && log_end_msg $ES
 	;;
