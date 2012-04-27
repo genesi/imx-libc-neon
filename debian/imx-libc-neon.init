@@ -22,17 +22,41 @@ DESC="libc-neon"
 
 . /lib/lsb/init-functions
 
+#Define functions for adding and removing libc-neon from the preload file.
+
+#first check to see if the library is already inside of the preload file
+#then add it.
+add_preload(){
+    grep $LIBC_NEON $ETC_LD_PRELOAD >/dev/null
+    if [ $? -eq 1 ]; then 
+        echo $LIBC_NEON >>$ETC_LD_PRELOAD
+    fi
+    return 0
+}
+
+#Use sed to remove our library from the preload file
+remove_preload(){
+    #This is a bit tricky due to the ` processing messing with our escapes
+    #this pattern actually ends up looking like 
+    #s/\//\\\//g once its actually passed to sed through the ` mechanism. 
+    PAT=`echo $LIBC_NEON | sed -e 's/\//\\\\\//g'`
+    sed -i -e "/$PAT/d" $ETC_LD_PRELOAD
+    return 0
+}
+
 # We take the special measure of requiring preloading
 # to be enabled by setting an environment variable.
 case "$PRELOAD_IMX_LIBC_NEON" in
   [Nn]*)
-yy	exit 0
+    remove_preload;
+	exit 0;
 	;;
 esac
 
 # Even if it's enabled, we disable it on TO2 systems, 
 # because the NEON unit is broken
 if [ "`grep -c neon $CPUINFO`" != 1 ]; then
+    remove_preload
     exit 0
 fi
 
@@ -43,19 +67,13 @@ ACTION="$1"
 case "$ACTION" in
   start)
         [ "$VERBOSE" != no ] && log_daemon_msg "Preloading $NAME"
-        [ ! -f $ETC_LD_PRELOAD ] && touch $ETC_LD_PRELOAD
-        if [ "`grep -c '^$$LIBC_NEON$' $ETC_LD_PRELOAD`" != 1 ]; then
-            echo $LIBC_NEON >>$ETC_LD_PRELOAD
-        fi
+        add_preload
         [ "$VERBOSE" != no ] && log_end_msg 0
         exit 0
         ;;
   stop)
         [ "$VERBOSE" != no ] && log_daemon_msg "Disabling preloading of $NAME"
-        if [ -f $ETC_LD_PRELOAD ]; then
-            grep -v "$LIBC_NEON" $ETC_LD_PRELOAD >$ETC_LD_PRELOAD.new
-            mv $ETC_LD_PRELOAD.new $ETC_LD_PRELOAD
-        fi
+        remove_preload
         [ "$VERBOSE" != no ] && log_end_msg 0
         exit 0
 	;;

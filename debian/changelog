@@ -1,3 +1,12 @@
+imx-libc-neon (1.0.1-2) unstable; urgency=low
+
+  * Use patch from William Schaub, fix some bugs with adding multiple entries to
+    ld.so.preload file, and check neon on each boot and if not there remove it
+    (useful for running an sdcard on a TO2, which previously ran on a TO3 but didn't
+    shutdown properly).
+
+ -- Konstantinos Margaritis <markos@genesi-usa.com>  Sat, 28 Apr 2012 01:18:13 +0300
+
 imx-libc-neon (1.0.1-1) unstable; urgency=low
 
   * Bumb version and revision a bit, don't use date revision scheme anymore
