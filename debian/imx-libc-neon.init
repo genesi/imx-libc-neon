@@ -3,9 +3,9 @@
 # Provides:          imx-libc-neon
 # Required-Start:    mountdevsubfs
 # X-Start-Before:    hostname keymap keyboard-setup procps pcmcia hwclock hwclockfirst hdparm hibernate-cleanup lvm2
-# Required-Stop:
-# Default-Start:     $all
-# Default-Stop:      $all
+# Required-Stop:     
+# Default-Start:     2 3 4 5 S
+# Default-Stop:      0 1 6
 # Short-Description: Preload the libc-neon library
 # Description:       Use LD_PRELOAD mechanism to preload NEON-optimized
 #                    replacement glibc routines.
@@ -42,20 +42,22 @@ SCRIPTNAME=${SCRIPTNAME#[SK]??}
 ACTION="$1"
 case "$ACTION" in
   start)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Preloading $NAME"
+        [ "$VERBOSE" != no ] && log_daemon_msg "Preloading $NAME"
         [ ! -f $ETC_LD_PRELOAD ] && touch $ETC_LD_PRELOAD
-        [ "`grep -c '^$$LIBC_NEON$' $ETC_LD_PRELOAD`" != 1 ] && echo $LIBC_NEON >>$ETC_LD_PRELOAD
-	ES=$?
-	[ "$VERBOSE" != no ] && log_end_msg $ES
-	;;
+        if [ "`grep -c '^$$LIBC_NEON$' $ETC_LD_PRELOAD`" != 1 ]; then
+            echo $LIBC_NEON >>$ETC_LD_PRELOAD
+        fi
+        [ "$VERBOSE" != no ] && log_end_msg 0
+        exit 0
+        ;;
   stop)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Disabling preloading of $NAME"
+        [ "$VERBOSE" != no ] && log_daemon_msg "Disabling preloading of $NAME"
         if [ -f $ETC_LD_PRELOAD ]; then
             grep -v "$LIBC_NEON" $ETC_LD_PRELOAD >$ETC_LD_PRELOAD.new
-            ES=$?
             mv $ETC_LD_PRELOAD.new $ETC_LD_PRELOAD
         fi
-	[ "$VERBOSE" != no ] && log_end_msg $ES
+        [ "$VERBOSE" != no ] && log_end_msg 0
+        exit 0
 	;;
   restart|force-reload)
 	;;
