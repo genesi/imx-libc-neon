@@ -1,3 +1,11 @@
+imx-libc-neon (1.0.1-3) unstable; urgency=low
+
+  * Fix the init script so that it creates the ld.so.preload file
+    if it doesn't exist.
+   
+
+ -- William Schaub <william.schaub@genesi-usa.com>  Fri, 25 May 2012 23:54:04 -0400
+
 imx-libc-neon (1.0.1-2) unstable; urgency=low
 
   * Use patch from William Schaub, fix some bugs with adding multiple entries to
