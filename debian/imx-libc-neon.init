@@ -27,6 +27,11 @@ DESC="libc-neon"
 #first check to see if the library is already inside of the preload file
 #then add it.
 add_preload(){
+    #the grep check below will fail if the ld.so.preload
+    #file does not exist first. 
+    if [ ! -f $ETC_LD_PRELOAD ]; then
+        touch $ETC_LD_PRELOAD
+    fi
     grep $LIBC_NEON $ETC_LD_PRELOAD >/dev/null
     if [ $? -eq 1 ]; then 
         echo $LIBC_NEON >>$ETC_LD_PRELOAD
